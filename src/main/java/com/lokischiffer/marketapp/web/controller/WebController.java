@@ -34,4 +34,33 @@ public class WebController {
     public void removeProduct() {
         System.out.println("Product remove method");
     }
+
+    @PostMapping (value = "/checkout/address")
+    @ResponseStatus (HttpStatus.ACCEPTED)
+    public void setAddress() {
+        System.out.println("Address for delivery set to checkout");
+    }
+
+    @PutMapping (value = "/checkout/address/{address}")
+    @ResponseStatus (HttpStatus.ACCEPTED)
+    public void updateAddress(@PathVariable("address") final String address) {
+        System.out.println("Address for delivery set to " + address);
+    }
+
+    @PostMapping (value = "/checkout/payment")
+    @ResponseStatus (HttpStatus.ACCEPTED)
+    public void setPaymentMethod() {
+        System.out.println("Method for payment set to order");
+    }
+
+    @PutMapping (value = "/checkout/payment/{payMethod}")
+    @ResponseStatus (HttpStatus.ACCEPTED)
+    public void updatePaymentMethod(@PathVariable("payMethod") final String payMethod) {
+        System.out.println("Method for payment set to " + payMethod);
+    }
+    @GetMapping (value = "/checkout")
+    @ResponseStatus (HttpStatus.OK)
+    public void obtainCheckoutInfo() {
+        System.out.println("Method for displaying checkout info");
+    }
 }
