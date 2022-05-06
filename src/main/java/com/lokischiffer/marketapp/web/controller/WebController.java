@@ -1,6 +1,8 @@
 package com.lokischiffer.marketapp.web.controller;
 
 import com.lokischiffer.marketapp.logic.dto.UserDto;
+import com.lokischiffer.marketapp.logic.service.CheckoutService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,12 +11,16 @@ import javax.validation.Valid;
 @RestController
 public class WebController {
 
+    @Autowired
+    private CheckoutService checkoutService;
+
     @PostMapping (value = "/login")
     @ResponseStatus (HttpStatus.ACCEPTED)
-    public void userLogin(@RequestBody @Valid UserDto user) {
-        UserDto newUser = user;
-        newUser.setEmail("Pruba@gmail.com");
+    @ResponseBody
+    public UserDto userLogin(@RequestBody @Valid UserDto user) {
+        UserDto newUser = checkoutService.loginUser(user);
         System.out.println(newUser);
+        return newUser;
     }
 
     @PostMapping (value = "/checkout/creation")
