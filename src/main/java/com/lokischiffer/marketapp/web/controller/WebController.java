@@ -1,5 +1,6 @@
 package com.lokischiffer.marketapp.web.controller;
 
+import com.lokischiffer.marketapp.logic.dto.ProductDto;
 import com.lokischiffer.marketapp.logic.dto.UserDto;
 import com.lokischiffer.marketapp.logic.service.CheckoutService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,14 @@ public class WebController {
         return newUser;
     }
 
-    @PostMapping (value = "/checkout/creation")
+    @PostMapping (value = "/checkout/creation/")
     @ResponseStatus (HttpStatus.CREATED)
-    public void createCheckout() {
+    @ResponseBody
+    public ProductDto createCheckout(@RequestBody @Valid ProductDto product,
+                                     @RequestBody @Valid UserDto user) {
+        ProductDto newProduct = checkoutService.checkoutCreation(product, user);
         System.out.println("Checkout creation method");
+        return newProduct;
     }
 
     @PutMapping (value = "/checkout/update")
