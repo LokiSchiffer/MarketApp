@@ -6,7 +6,7 @@ import com.lokischiffer.marketapp.logic.dto.ProductDto;
 import com.lokischiffer.marketapp.logic.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class AbstractCheckoutService<T extends ProductDto, R extends UserDto> {
+public abstract class AbstractCheckoutService<T extends ProductDto, R extends UserDto> {
 
     @Autowired
     private DummyProductDB dummyDB;
