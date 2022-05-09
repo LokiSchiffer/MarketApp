@@ -1,4 +1,4 @@
-package com.lokischiffer.marketapp.logic.service;
+package com.lokischiffer.marketapp.logic.service.login;
 
 import com.lokischiffer.marketapp.logic.dto.UserDto;
 import org.springframework.stereotype.Component;

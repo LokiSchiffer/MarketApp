@@ -1,4 +1,4 @@
-package com.lokischiffer.marketapp.logic.service;
+package com.lokischiffer.marketapp.logic.service.login;
 
 import com.lokischiffer.marketapp.db.model.UserDb;
 import com.lokischiffer.marketapp.db.repository.DummyUserDB;
