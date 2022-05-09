@@ -1,6 +1,5 @@
 package com.lokischiffer.marketapp.db.repository;
 
-import com.lokischiffer.marketapp.db.model.PaymentMethodDb;
 import com.lokischiffer.marketapp.db.model.UserDb;
 import org.springframework.stereotype.Component;
 
@@ -8,11 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class DummyDB {
+public class DummyUserDB {
 
     public Map<String, UserDb> userList;
 
-    public DummyDB() {
+    public DummyUserDB() {
         userList = new HashMap<>();
         createUsersDb();
     }

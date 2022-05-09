@@ -1,14 +1,14 @@
 package com.lokischiffer.marketapp.logic.service;
 
 import com.lokischiffer.marketapp.db.model.UserDb;
-import com.lokischiffer.marketapp.db.repository.DummyDB;
+import com.lokischiffer.marketapp.db.repository.DummyUserDB;
 import com.lokischiffer.marketapp.logic.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractLoginService<T extends UserDto> {
 
     @Autowired
-     private DummyDB dummyDB;
+     private DummyUserDB dummyDB;
 
     protected final UserDto loginInternal(T resource) {
         if (!dummyDB.userList.containsKey(resource.getEmail())) {
