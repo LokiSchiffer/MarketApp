@@ -5,7 +5,7 @@ import com.lokischiffer.marketapp.db.repository.DummyDB;
 import com.lokischiffer.marketapp.logic.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public abstract class AbstractCheckoutService<T extends UserDto> {
+public abstract class AbstractLoginService<T extends UserDto> {
 
     @Autowired
      private DummyDB dummyDB;
@@ -20,21 +20,6 @@ public abstract class AbstractCheckoutService<T extends UserDto> {
         }
 
     }
-
-//    protected final ProductDto createInternal(ProductDto product, T user) {
-//        if (loginInternal(user) == null) {
-//            throw new NullPointerException("User not identified");
-//        }
-//        if (!dummyDB.productList.containsKey(product.getId())) {
-//            throw new NullPointerException("Product not found");
-//        } else if (dummyDB.productList.get(product.getId()).getQuantity() < product.getQuantity()) {
-//            throw new IllegalArgumentException("You're trying to reserved a bigger quantity than");
-//        } else {
-//            ProductDto productDto = createUserDto(dummyDB.productList.get(product.getId()));
-//            productDto.setQuantity(product.getQuantity());
-//            return productDto;
-//        }
-//    }
 
 
 
