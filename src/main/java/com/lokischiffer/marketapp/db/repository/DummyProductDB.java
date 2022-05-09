@@ -1,10 +1,12 @@
 package com.lokischiffer.marketapp.db.repository;
 
 import com.lokischiffer.marketapp.db.model.ProductDb;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class DummyProductDB {
 
     public Map<Long, ProductDb> productList;

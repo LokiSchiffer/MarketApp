@@ -1,10 +1,12 @@
 package com.lokischiffer.marketapp.db.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
+@AllArgsConstructor
 public class UserDb {
 
     private long id;
