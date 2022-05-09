@@ -2,7 +2,8 @@ package com.lokischiffer.marketapp.web.controller;
 
 import com.lokischiffer.marketapp.logic.dto.ProductDto;
 import com.lokischiffer.marketapp.logic.dto.UserDto;
-import com.lokischiffer.marketapp.logic.service.CheckoutService;
+import com.lokischiffer.marketapp.logic.service.checkout.CheckoutService;
+import com.lokischiffer.marketapp.logic.service.login.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,13 +14,16 @@ import javax.validation.Valid;
 public class WebController {
 
     @Autowired
+    private LoginService loginService;
+
+    @Autowired
     private CheckoutService checkoutService;
 
     @PostMapping (value = "/login")
     @ResponseStatus (HttpStatus.ACCEPTED)
     @ResponseBody
     public UserDto userLogin(@RequestBody @Valid UserDto user) {
-        UserDto newUser = checkoutService.loginUser(user);
+        UserDto newUser = loginService.loginUser(user);
         System.out.println(newUser);
         return newUser;
     }
