@@ -22,22 +22,6 @@ public abstract class AbstractLoginService<T extends UserDto> {
     }
 
 
-
-    private UserDb createUser(T userDto){
-        long id = 0L;
-        if (dummyDB.existsByEmail(userDto.getEmail())){
-            id = dummyDB.findByEmail(userDto.getEmail()).getId();
-        }
-        return createUser(id, userDto);
-    }
-
-    private UserDb createUser(long id, T userDto){
-        UserDb user = new UserDb(userDto.getEmail(), userDto.getName(), userDto.getPassword());
-        if (id != 0)
-            user.setId(id);
-        return user;
-    }
-
     private UserDto createUserDto(UserDb user) {
         return new UserDto(user.getEmail(), user.getName(), user.getPassword());
     }
