@@ -31,17 +31,20 @@ public class WebController {
     @PostMapping (value = "/checkout/creation/")
     @ResponseStatus (HttpStatus.CREATED)
     @ResponseBody
-    public ProductDto createCheckout(@RequestBody @Valid ProductDto product,
-                                     @RequestBody @Valid UserDto user) {
-        ProductDto newProduct = checkoutService.checkoutCreation(product, user);
+    public ProductDto createCheckout(@RequestBody @Valid ProductDto product) {
+        ProductDto newProduct = checkoutService.checkoutCreation(product);
         System.out.println("Checkout creation method");
         return newProduct;
     }
 
-    @PutMapping (value = "/checkout/update")
+    @PutMapping (value = "/checkout/update/{id}")
     @ResponseStatus (HttpStatus.OK)
-    public void updateProductQuantity() {
+    @ResponseBody
+    public ProductDto updateProductQuantity(@PathVariable("id") final long id,
+                                            @RequestBody @Valid ProductDto product) {
+        ProductDto newProduct = checkoutService.updateQuantity(id, product);
         System.out.println("Product quantity modification method");
+        return newProduct;
     }
 
     @DeleteMapping (value = "/checkout/deletion")
