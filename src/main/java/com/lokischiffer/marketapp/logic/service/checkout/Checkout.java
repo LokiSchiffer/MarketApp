@@ -22,15 +22,15 @@ public class Checkout {
         return RegistryHolder.INSTANCE;
     }
 
-    public static boolean verifyList() {
+    public boolean verifyList() {
         return productList.isEmpty();
     }
 
-    public static boolean verifyProduct(ProductDto product) {
+    public boolean verifyProduct(ProductDto product) {
         return productList.containsKey(product.getId());
     }
 
-    public static void addProduct(ProductDto product) {
+    public void addProduct(ProductDto product) {
         if (productList.containsKey(product.getId())) {
             ProductDto newProduct = productList.get(product.getId());
             newProduct.setQuantity(newProduct.getQuantity() + product.getQuantity());
@@ -40,13 +40,13 @@ public class Checkout {
         }
     }
 
-    public static void removeProduct(ProductDto product) {
+    public void removeProduct(ProductDto product) {
         if (productList.containsKey(product.getId())) {
             productList.remove(product.getId());
         }
     }
 
-    public static void deleteInstance() {
+    public void deleteInstance() {
         if (RegistryHolder.INSTANCE != null) {
             RegistryHolder.INSTANCE = null;
         }
