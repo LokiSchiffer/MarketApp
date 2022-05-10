@@ -3,6 +3,7 @@ package com.lokischiffer.marketapp.logic.service.checkout;
 import com.lokischiffer.marketapp.db.model.ProductDb;
 import com.lokischiffer.marketapp.db.repository.DummyProductDB;
 import com.lokischiffer.marketapp.logic.dto.ProductDto;
+import com.lokischiffer.marketapp.logic.exceptions.custom.ParameterNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractCheckoutService<T extends ProductDto> {
@@ -20,7 +21,7 @@ public abstract class AbstractCheckoutService<T extends ProductDto> {
         if (!verifyInstance()){
             throw new IllegalArgumentException("The checkout is already created");
         } else if (!dummyDB.productList.containsKey(product.getId())) {
-            throw new NullPointerException("Product not found");
+            throw new ParameterNotFoundException("Product not found");
         } else if (availableStock(product) < product.getQuantity()) {
             throw new IllegalArgumentException("You're trying to reserved a bigger quantity than"
                     + "there is available");
@@ -35,9 +36,9 @@ public abstract class AbstractCheckoutService<T extends ProductDto> {
     protected final ProductDto addInternal(T product) {
         if (verifyInstance()) {
             dropInstance();
-            throw new IllegalArgumentException("There is no checkout created");
+            throw new ParameterNotFoundException("There is no checkout created");
         } else if (!dummyDB.productList.containsKey(product.getId())) {
-            throw new NullPointerException("There is no product with that ID");
+            throw new ParameterNotFoundException("There is no product with that ID");
         } else if (availableStock(product) < product.getQuantity()) {
             throw new IllegalArgumentException("You're trying to reserve a bigger quantity than"
                     + " there is available");
@@ -55,16 +56,16 @@ public abstract class AbstractCheckoutService<T extends ProductDto> {
     protected final ProductDto updateQuantityInternal(long id, ProductDto product) {
         if (verifyInstance()) {
             dropInstance();
-            throw new IllegalArgumentException("There is no checkout created");
+            throw new ParameterNotFoundException("There is no checkout created");
         } else if (!dummyDB.productList.containsKey(id)) {
-            throw new NullPointerException("There is no product with that ID");
+            throw new ParameterNotFoundException("There is no product with that ID");
         } else if (product.getId() != id) {
             throw new IllegalArgumentException("ID in the URI doesn't match the product ID");
         } else if (availableStock(product) < product.getQuantity()) {
             throw new IllegalArgumentException("You're trying to reserve a bigger quantity than"
                     + " there is available");
         } else if (!checkout.verifyProduct(product)) {
-            throw new IllegalArgumentException("That product is not on the checkout");
+            throw new ParameterNotFoundException("That product is not on the checkout");
         } else {
             int reservedStock = dummyDB.productList.get(product.getId()).getReservedQuantity()
                     + product.getQuantity();
@@ -78,13 +79,13 @@ public abstract class AbstractCheckoutService<T extends ProductDto> {
     protected final ProductDto removeInternal(String name) {
         if (verifyInstance()) {
             dropInstance();
-            throw new IllegalArgumentException("There is no checkout created");
+            throw new ParameterNotFoundException("There is no checkout created");
         } else if (!dummyDB.existsByName(name)) {
-            throw new NullPointerException("There is no product with that name");
+            throw new ParameterNotFoundException("There is no product with that name");
         }
         ProductDto product = createProductDto(dummyDB.findByName(name));
         if (!checkout.verifyProduct(product)) {
-            throw new IllegalArgumentException("That product is not on the checkout");
+            throw new ParameterNotFoundException("That product is not on the checkout");
         } else {
             checkout.removeProduct(product);
             if (checkout.verifyList()) {

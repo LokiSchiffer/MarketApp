@@ -3,6 +3,7 @@ package com.lokischiffer.marketapp.logic.service.login;
 import com.lokischiffer.marketapp.db.model.UserDb;
 import com.lokischiffer.marketapp.db.repository.DummyUserDB;
 import com.lokischiffer.marketapp.logic.dto.UserDto;
+import com.lokischiffer.marketapp.logic.exceptions.custom.ParameterNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractLoginService<T extends UserDto> {
@@ -12,7 +13,7 @@ public abstract class AbstractLoginService<T extends UserDto> {
 
     protected final UserDto loginInternal(T resource) {
         if (!dummyDB.userList.containsKey(resource.getEmail())) {
-            throw new NullPointerException("Email not found");
+            throw new ParameterNotFoundException("Email not found");
         } else if (!resource.getPassword().equalsIgnoreCase(dummyDB.userList.get(resource.getEmail()).getPassword())) {
             return null;
         } else {
