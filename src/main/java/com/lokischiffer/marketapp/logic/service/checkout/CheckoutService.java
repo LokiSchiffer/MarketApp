@@ -9,4 +9,8 @@ public class CheckoutService extends AbstractCheckoutService<ProductDto> {
     public ProductDto checkoutCreation(ProductDto product) {
         return createInternal(product);
     }
+
+    public ProductDto updateQuantity(long id, ProductDto product) {
+        return updateQuantityInternal(id, product);
+    }
 }
