@@ -90,7 +90,9 @@ public abstract class AbstractCheckoutService<T extends ProductDto> {
             if (checkout.verifyList()) {
                 dropInstance();
             }
-            ProductDto productDto = createProductDto(dummyDB.productList.remove(product.getId()));
+            ProductDto productDto = createProductDto(dummyDB.productList.get(product.getId()));
+            productDto.setQuantity(dummyDB.productList.get(product.getId()).getReservedQuantity());
+            dummyDB.productList.get(product.getId()).setReservedQuantity(0);
             return productDto;
         }
     }
