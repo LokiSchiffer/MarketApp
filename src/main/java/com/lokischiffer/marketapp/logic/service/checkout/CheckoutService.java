@@ -17,4 +17,8 @@ public class CheckoutService extends AbstractCheckoutService<ProductDto> {
     public ProductDto updateQuantity(long id, ProductDto product) {
         return updateQuantityInternal(id, product);
     }
+
+    public ProductDto removeProduct(String name) {
+        return removeInternal(name);
+    }
 }

@@ -40,6 +40,12 @@ public class Checkout {
         }
     }
 
+    public static void removeProduct(ProductDto product) {
+        if (productList.containsKey(product.getId())) {
+            productList.remove(product.getId());
+        }
+    }
+
     public static void deleteInstance() {
         if (RegistryHolder.INSTANCE != null) {
             RegistryHolder.INSTANCE = null;

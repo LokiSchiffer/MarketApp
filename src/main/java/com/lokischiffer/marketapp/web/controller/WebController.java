@@ -28,7 +28,7 @@ public class WebController {
         return newUser;
     }
 
-    @PostMapping (value = "/checkout/creation/")
+    @PostMapping (value = "/checkout/creation")
     @ResponseStatus (HttpStatus.CREATED)
     @ResponseBody
     public ProductDto createCheckout(@RequestBody @Valid ProductDto product) {
@@ -37,7 +37,7 @@ public class WebController {
         return newProduct;
     }
 
-    @PostMapping (value = "/checkout/add/")
+    @PostMapping (value = "/checkout/add")
     @ResponseStatus (HttpStatus.CREATED)
     @ResponseBody
     public ProductDto addCheckout(@RequestBody @Valid ProductDto product) {
@@ -56,10 +56,13 @@ public class WebController {
         return newProduct;
     }
 
-    @DeleteMapping (value = "/checkout/deletion")
+    @DeleteMapping (value = "/checkout/deletion/{name]")
     @ResponseStatus (HttpStatus.OK)
-    public void removeProduct() {
+    @ResponseBody
+    public ProductDto removeProduct(@PathVariable("name") final String name) {
+        ProductDto newProduct = checkoutService.removeProduct(name);
         System.out.println("Product remove method");
+        return newProduct;
     }
 
     @PostMapping (value = "/checkout/address")

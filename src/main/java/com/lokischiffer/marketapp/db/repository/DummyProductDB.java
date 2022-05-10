@@ -24,4 +24,22 @@ public class DummyProductDB {
         product = ProductDb.builder().id(3).name("Eggs").quantityInStock(10).build();
         productList.put(product.getId(), product);
     }
+
+    public boolean existsByName(String name){
+        for (ProductDb productDb : productList.values()) {
+            if (productDb.getName().equalsIgnoreCase(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public ProductDb findByName(String name) {
+        for (ProductDb productDb : productList.values()) {
+            if (productDb.getName().equalsIgnoreCase(name)) {
+                return productDb;
+            }
+        }
+        return null;
+    }
 }
