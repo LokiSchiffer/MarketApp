@@ -56,14 +56,15 @@ public abstract class AbstractCheckoutService<T extends ProductDto> {
         if (verifyInstance()) {
             dropInstance();
             throw new IllegalArgumentException("There is no checkout created");
-        }
-        if (!dummyDB.productList.containsKey(id)) {
+        } else if (!dummyDB.productList.containsKey(id)) {
             throw new NullPointerException("There is no product with that ID");
         } else if (product.getId() != id) {
             throw new IllegalArgumentException("ID in the URI doesn't match the product ID");
         } else if (availableStock(product) < product.getQuantity()) {
             throw new IllegalArgumentException("You're trying to reserve a bigger quantity than"
                     + " there is available");
+        } else if (!checkout.verifyProduct(product)) {
+            throw new IllegalArgumentException("That product is not on the checkout");
         } else {
             int reservedStock = dummyDB.productList.get(product.getId()).getReservedQuantity()
                     + product.getQuantity();
