@@ -10,17 +10,22 @@ public abstract class AbstractCheckoutService<T extends ProductDto> {
     @Autowired
     private DummyProductDB dummyDB;
 
+    private Checkout checkout;
+
 
     protected final ProductDto createInternal(T product) {
 //        if (loginInternal(user) == null) {
 //            throw new NullPointerException("User not identified");
 //        }
-        if (!dummyDB.productList.containsKey(product.getId())) {
+        if (!verifyInstance()){
+            throw new IllegalArgumentException("The checkout is already created");
+        } else if (!dummyDB.productList.containsKey(product.getId())) {
             throw new NullPointerException("Product not found");
         } else if (availableStock(product) < product.getQuantity()) {
             throw new IllegalArgumentException("You're trying to reserved a bigger quantity than"
                     + "there is available");
         } else {
+            checkout.addProduct(product);
             ProductDto productDto = createProductDto(dummyDB.productList.get(product.getId()));
             productDto.setQuantity(product.getQuantity());
             return productDto;
@@ -43,6 +48,11 @@ public abstract class AbstractCheckoutService<T extends ProductDto> {
             productDto.setQuantity(dummyDB.productList.get(product.getId()).getReservedQuantity());
             return productDto;
         }
+    }
+
+    private boolean verifyInstance() {
+        checkout = Checkout.getInstance();
+        return checkout.verifyList();
     }
 
     private ProductDto createProductDto(ProductDb productDb) {
