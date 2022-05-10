@@ -33,14 +33,14 @@ public abstract class AbstractCheckoutService<T extends ProductDto> {
         } else if (product.getId() != id) {
             throw new IllegalArgumentException("ID in the URI doesn't match the product ID");
         } else if (availableStock(product) < product.getQuantity()) {
-            throw new IllegalArgumentException("You're trying to reserved a bigger quantity than"
-                    + "there is available");
+            throw new IllegalArgumentException("You're trying to reserve a bigger quantity than"
+                    + " there is available");
         } else {
             int reservedStock = dummyDB.productList.get(product.getId()).getReservedQuantity()
                     + product.getQuantity();
             dummyDB.productList.get(product.getId()).setReservedQuantity(reservedStock);
             ProductDto productDto = createProductDto(dummyDB.productList.get(product.getId()));
-            productDto.setQuantity(product.getQuantity());
+            productDto.setQuantity(dummyDB.productList.get(product.getId()).getReservedQuantity());
             return productDto;
         }
     }
