@@ -19,6 +19,8 @@ public class Checkout {
     }
 
     public static Checkout getInstance() {
+        if (RegistryHolder.INSTANCE == null)
+            RegistryHolder.INSTANCE = new Checkout();
         return RegistryHolder.INSTANCE;
     }
 
