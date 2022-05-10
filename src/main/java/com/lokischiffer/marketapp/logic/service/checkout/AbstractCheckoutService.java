@@ -1,7 +1,7 @@
 package com.lokischiffer.marketapp.logic.service.checkout;
 
 import com.lokischiffer.marketapp.db.model.ProductDb;
-import com.lokischiffer.marketapp.db.repository.DummyProductDB;
+import com.lokischiffer.marketapp.db.repository.ProductRepository;
 import com.lokischiffer.marketapp.logic.dto.ProductDto;
 import com.lokischiffer.marketapp.logic.exceptions.custom.BadRequestException;
 import com.lokischiffer.marketapp.logic.exceptions.custom.ConflictException;
@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class AbstractCheckoutService<T extends ProductDto> {
 
     @Autowired
-    private DummyProductDB dummyDB;
+    private ProductRepository repository;
 
     private Checkout checkout;
 
@@ -22,16 +22,16 @@ public abstract class AbstractCheckoutService<T extends ProductDto> {
 //        }
         if (!verifyInstance()){
             throw new BadRequestException("The checkout is already created");
-        } else if (!dummyDB.productList.containsKey(product.getId())) {
+        } else if (!repository.existsById(product.getId())) {
             throw new ParameterNotFoundException("Product not found");
         } else if (availableStock(product) < product.getQuantity()) {
             throw new BadRequestException("You're trying to reserved a bigger quantity than"
                     + "there is available");
         } else {
             checkout.addProduct(product);
-            dummyDB.productList.get(product.getId()).setReservedQuantity(product.getQuantity());
-            ProductDto productDto = createProductDto(dummyDB.productList.get(product.getId()));
-            productDto.setQuantity(dummyDB.productList.get(product.getId()).getReservedQuantity());
+            repository.findById(product.getId()).get().setReservedQuantity(product.getQuantity());
+            ProductDto productDto = createProductDto(repository.findById(product.getId()).get());
+            productDto.setQuantity(repository.findById(product.getId()).get().getReservedQuantity());
             return productDto;
         }
     }
@@ -39,7 +39,7 @@ public abstract class AbstractCheckoutService<T extends ProductDto> {
         if (verifyInstance()) {
             dropInstance();
             throw new ParameterNotFoundException("There is no checkout created");
-        } else if (!dummyDB.productList.containsKey(product.getId())) {
+        } else if (!repository.existsById(product.getId())) {
             throw new ParameterNotFoundException("There is no product with that ID");
         } else if (availableStock(product) < product.getQuantity()) {
             throw new BadRequestException("You're trying to reserve a bigger quantity than"
@@ -48,9 +48,9 @@ public abstract class AbstractCheckoutService<T extends ProductDto> {
             throw new BadRequestException("That product is already on the checkout");
         } else {
             checkout.addProduct(product);
-            dummyDB.productList.get(product.getId()).setReservedQuantity(product.getQuantity());
-            ProductDto productDto = createProductDto(dummyDB.productList.get(product.getId()));
-            productDto.setQuantity(dummyDB.productList.get(product.getId()).getReservedQuantity());
+            repository.findById(product.getId()).get().setReservedQuantity(product.getQuantity());
+            ProductDto productDto = createProductDto(repository.findById(product.getId()).get());
+            productDto.setQuantity(repository.findById(product.getId()).get().getReservedQuantity());
             return productDto;
         }
     }
@@ -59,7 +59,7 @@ public abstract class AbstractCheckoutService<T extends ProductDto> {
         if (verifyInstance()) {
             dropInstance();
             throw new ParameterNotFoundException("There is no checkout created");
-        } else if (!dummyDB.productList.containsKey(id)) {
+        } else if (!repository.existsById(id)) {
             throw new ParameterNotFoundException("There is no product with that ID");
         } else if (product.getId() != id) {
             throw new ConflictException("ID in the URI doesn't match the product ID");
@@ -69,11 +69,11 @@ public abstract class AbstractCheckoutService<T extends ProductDto> {
         } else if (!checkout.verifyProduct(product)) {
             throw new ParameterNotFoundException("That product is not on the checkout");
         } else {
-            int reservedStock = dummyDB.productList.get(product.getId()).getReservedQuantity()
+            int reservedStock = repository.findById(product.getId()).get().getReservedQuantity()
                     + product.getQuantity();
-            dummyDB.productList.get(product.getId()).setReservedQuantity(reservedStock);
-            ProductDto productDto = createProductDto(dummyDB.productList.get(product.getId()));
-            productDto.setQuantity(dummyDB.productList.get(product.getId()).getReservedQuantity());
+            repository.findById(product.getId()).get().setReservedQuantity(reservedStock);
+            ProductDto productDto = createProductDto(repository.findById(product.getId()).get());
+            productDto.setQuantity(repository.findById(product.getId()).get().getReservedQuantity());
             return productDto;
         }
     }
@@ -82,10 +82,10 @@ public abstract class AbstractCheckoutService<T extends ProductDto> {
         if (verifyInstance()) {
             dropInstance();
             throw new ParameterNotFoundException("There is no checkout created");
-        } else if (!dummyDB.existsByName(name)) {
+        } else if (!repository.existsByName(name)) {
             throw new ParameterNotFoundException("There is no product with that name");
         }
-        ProductDto product = createProductDto(dummyDB.findByName(name));
+        ProductDto product = createProductDto(repository.findByName(name).get());
         if (!checkout.verifyProduct(product)) {
             throw new ParameterNotFoundException("That product is not on the checkout");
         } else {
@@ -93,9 +93,9 @@ public abstract class AbstractCheckoutService<T extends ProductDto> {
             if (checkout.verifyList()) {
                 dropInstance();
             }
-            ProductDto productDto = createProductDto(dummyDB.productList.get(product.getId()));
-            productDto.setQuantity(dummyDB.productList.get(product.getId()).getReservedQuantity());
-            dummyDB.productList.get(product.getId()).setReservedQuantity(0);
+            ProductDto productDto = createProductDto(repository.findById(product.getId()).get());
+            productDto.setQuantity(repository.findById(product.getId()).get().getReservedQuantity());
+            repository.findById(product.getId()).get().setReservedQuantity(0);
             return productDto;
         }
     }
@@ -114,7 +114,7 @@ public abstract class AbstractCheckoutService<T extends ProductDto> {
     }
 
     private int availableStock(ProductDto productDto) {
-        return dummyDB.productList.get(productDto.getId()).getQuantityInStock()
-                -dummyDB.productList.get(productDto.getId()).getReservedQuantity();
+        return repository.findById(productDto.getId()).get().getQuantityInStock()
+                - repository.findById(productDto.getId()).get().getReservedQuantity();
     }
 }
