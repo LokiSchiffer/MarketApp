@@ -37,6 +37,15 @@ public class WebController {
         return newProduct;
     }
 
+    @PostMapping (value = "/checkout/add/")
+    @ResponseStatus (HttpStatus.CREATED)
+    @ResponseBody
+    public ProductDto addCheckout(@RequestBody @Valid ProductDto product) {
+        ProductDto newProduct = checkoutService.checkoutAddition(product);
+        System.out.println("Checkout adding method");
+        return newProduct;
+    }
+
     @PutMapping (value = "/checkout/update/{id}")
     @ResponseStatus (HttpStatus.OK)
     @ResponseBody

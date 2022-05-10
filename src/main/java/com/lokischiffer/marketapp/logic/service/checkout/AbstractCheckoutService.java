@@ -32,6 +32,25 @@ public abstract class AbstractCheckoutService<T extends ProductDto> {
             return productDto;
         }
     }
+    protected final ProductDto addInternal(T product) {
+        if (verifyInstance()) {
+            dropInstance();
+            throw new IllegalArgumentException("There is no checkout created");
+        } else if (!dummyDB.productList.containsKey(product.getId())) {
+            throw new NullPointerException("There is no product with that ID");
+        } else if (availableStock(product) < product.getQuantity()) {
+            throw new IllegalArgumentException("You're trying to reserve a bigger quantity than"
+                    + " there is available");
+        } else if (checkout.verifyProduct(product)) {
+            throw new IllegalArgumentException("That product is already on the checkout");
+        } else {
+            checkout.addProduct(product);
+            dummyDB.productList.get(product.getId()).setReservedQuantity(product.getQuantity());
+            ProductDto productDto = createProductDto(dummyDB.productList.get(product.getId()));
+            productDto.setQuantity(dummyDB.productList.get(product.getId()).getReservedQuantity());
+            return productDto;
+        }
+    }
 
     protected final ProductDto updateQuantityInternal(long id, ProductDto product) {
         if (verifyInstance()) {

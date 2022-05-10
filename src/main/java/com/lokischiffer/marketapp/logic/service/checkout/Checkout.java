@@ -26,6 +26,10 @@ public class Checkout {
         return productList.isEmpty();
     }
 
+    public static boolean verifyProduct(ProductDto product) {
+        return productList.containsKey(product.getId());
+    }
+
     public static void addProduct(ProductDto product) {
         if (productList.containsKey(product.getId())) {
             ProductDto newProduct = productList.get(product.getId());
