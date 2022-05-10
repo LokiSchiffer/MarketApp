@@ -76,13 +76,14 @@ public abstract class AbstractCheckoutService<T extends ProductDto> {
     }
 
     protected final ProductDto removeInternal(String name) {
-        ProductDto product = createProductDto(dummyDB.findByName(name));
         if (verifyInstance()) {
             dropInstance();
             throw new IllegalArgumentException("There is no checkout created");
         } else if (!dummyDB.existsByName(name)) {
             throw new NullPointerException("There is no product with that name");
-        } else if (!checkout.verifyProduct(product)) {
+        }
+        ProductDto product = createProductDto(dummyDB.findByName(name));
+        if (!checkout.verifyProduct(product)) {
             throw new IllegalArgumentException("That product is not on the checkout");
         } else {
             checkout.removeProduct(product);

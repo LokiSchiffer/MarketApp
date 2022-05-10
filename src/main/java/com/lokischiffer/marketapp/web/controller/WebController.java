@@ -56,7 +56,7 @@ public class WebController {
         return newProduct;
     }
 
-    @DeleteMapping (value = "/checkout/deletion/{name]")
+    @DeleteMapping (value = "/checkout/deletion/{name}")
     @ResponseStatus (HttpStatus.OK)
     @ResponseBody
     public ProductDto removeProduct(@PathVariable("name") final String name) {
