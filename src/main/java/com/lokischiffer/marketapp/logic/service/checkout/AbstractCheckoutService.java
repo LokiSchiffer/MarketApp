@@ -3,6 +3,7 @@ package com.lokischiffer.marketapp.logic.service.checkout;
 import com.lokischiffer.marketapp.db.model.ProductDb;
 import com.lokischiffer.marketapp.db.repository.DummyProductDB;
 import com.lokischiffer.marketapp.logic.dto.ProductDto;
+import com.lokischiffer.marketapp.logic.exceptions.custom.BadRequestException;
 import com.lokischiffer.marketapp.logic.exceptions.custom.ConflictException;
 import com.lokischiffer.marketapp.logic.exceptions.custom.ParameterNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,11 @@ public abstract class AbstractCheckoutService<T extends ProductDto> {
 //            throw new NullPointerException("User not identified");
 //        }
         if (!verifyInstance()){
-            throw new IllegalArgumentException("The checkout is already created");
+            throw new BadRequestException("The checkout is already created");
         } else if (!dummyDB.productList.containsKey(product.getId())) {
             throw new ParameterNotFoundException("Product not found");
         } else if (availableStock(product) < product.getQuantity()) {
-            throw new IllegalArgumentException("You're trying to reserved a bigger quantity than"
+            throw new BadRequestException("You're trying to reserved a bigger quantity than"
                     + "there is available");
         } else {
             checkout.addProduct(product);
@@ -41,10 +42,10 @@ public abstract class AbstractCheckoutService<T extends ProductDto> {
         } else if (!dummyDB.productList.containsKey(product.getId())) {
             throw new ParameterNotFoundException("There is no product with that ID");
         } else if (availableStock(product) < product.getQuantity()) {
-            throw new IllegalArgumentException("You're trying to reserve a bigger quantity than"
+            throw new BadRequestException("You're trying to reserve a bigger quantity than"
                     + " there is available");
         } else if (checkout.verifyProduct(product)) {
-            throw new IllegalArgumentException("That product is already on the checkout");
+            throw new BadRequestException("That product is already on the checkout");
         } else {
             checkout.addProduct(product);
             dummyDB.productList.get(product.getId()).setReservedQuantity(product.getQuantity());
@@ -63,7 +64,7 @@ public abstract class AbstractCheckoutService<T extends ProductDto> {
         } else if (product.getId() != id) {
             throw new ConflictException("ID in the URI doesn't match the product ID");
         } else if (availableStock(product) < product.getQuantity()) {
-            throw new IllegalArgumentException("You're trying to reserve a bigger quantity than"
+            throw new BadRequestException("You're trying to reserve a bigger quantity than"
                     + " there is available");
         } else if (!checkout.verifyProduct(product)) {
             throw new ParameterNotFoundException("That product is not on the checkout");
