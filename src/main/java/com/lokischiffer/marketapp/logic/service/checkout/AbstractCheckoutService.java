@@ -3,6 +3,7 @@ package com.lokischiffer.marketapp.logic.service.checkout;
 import com.lokischiffer.marketapp.db.model.ProductDb;
 import com.lokischiffer.marketapp.db.repository.DummyProductDB;
 import com.lokischiffer.marketapp.logic.dto.ProductDto;
+import com.lokischiffer.marketapp.logic.exceptions.custom.ConflictException;
 import com.lokischiffer.marketapp.logic.exceptions.custom.ParameterNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -60,7 +61,7 @@ public abstract class AbstractCheckoutService<T extends ProductDto> {
         } else if (!dummyDB.productList.containsKey(id)) {
             throw new ParameterNotFoundException("There is no product with that ID");
         } else if (product.getId() != id) {
-            throw new IllegalArgumentException("ID in the URI doesn't match the product ID");
+            throw new ConflictException("ID in the URI doesn't match the product ID");
         } else if (availableStock(product) < product.getQuantity()) {
             throw new IllegalArgumentException("You're trying to reserve a bigger quantity than"
                     + " there is available");
