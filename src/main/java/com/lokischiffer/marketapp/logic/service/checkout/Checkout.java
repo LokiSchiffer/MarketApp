@@ -35,4 +35,11 @@ public class Checkout {
             productList.put(product.getId(), product);
         }
     }
+
+    public static void deleteInstance() {
+        if (RegistryHolder.INSTANCE != null) {
+            RegistryHolder.INSTANCE = null;
+        }
+        System.out.println("Checkout deletion");
+    }
 }
