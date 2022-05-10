@@ -17,11 +17,11 @@ public class DummyProductDB {
     }
 
     private void fillProductDb() {
-        ProductDb product = ProductDb.builder().id(1).name("Cookies").quantity(20).build();
+        ProductDb product = ProductDb.builder().id(1).name("Cookies").quantityInStock(20).build();
         productList.put(product.getId(), product);
-        product = ProductDb.builder().id(2).name("Milk").quantity(30).build();
+        product = ProductDb.builder().id(2).name("Milk").quantityInStock(30).build();
         productList.put(product.getId(), product);
-        product = ProductDb.builder().id(3).name("Eggs").quantity(10).build();
+        product = ProductDb.builder().id(3).name("Eggs").quantityInStock(10).build();
         productList.put(product.getId(), product);
     }
 }

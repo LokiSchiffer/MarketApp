@@ -9,5 +9,6 @@ public class ProductDb {
 
     private long id;
     private String name;
-    private int quantity;
+    private int quantityInStock;
+    private int reservedQuantity;
 }
