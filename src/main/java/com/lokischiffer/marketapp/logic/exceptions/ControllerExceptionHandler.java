@@ -1,5 +1,7 @@
 package com.lokischiffer.marketapp.logic.exceptions;
 
+import com.lokischiffer.marketapp.logic.exceptions.custom.BadRequestException;
+import com.lokischiffer.marketapp.logic.exceptions.custom.ConflictException;
 import com.lokischiffer.marketapp.logic.exceptions.custom.ParameterNotFoundException;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -30,7 +32,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, message(HttpStatus.BAD_REQUEST, ex), headers, HttpStatus.BAD_REQUEST, request);
     }
 
-    @ExceptionHandler(value = { DataIntegrityViolationException.class, ConstraintViolationException.class, })
+    @ExceptionHandler(value = { DataIntegrityViolationException.class, ConstraintViolationException.class, BadRequestException.class})
     protected final ResponseEntity<Object> handleBadRequest(final RuntimeException ex, final WebRequest request) {
         return handleExceptionInternal(ex, message(HttpStatus.BAD_REQUEST, ex), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
@@ -38,6 +40,11 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {ParameterNotFoundException.class})
     protected final ResponseEntity<Object> handleNotFound(final RuntimeException ex, final WebRequest request) {
         return handleExceptionInternal(ex, message(HttpStatus.NOT_FOUND, ex), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(value = {ConflictException.class})
+    protected final ResponseEntity<Object> handleConflict(final RuntimeException ex, final WebRequest request) {
+        return handleExceptionInternal(ex, message(HttpStatus.CONFLICT, ex), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
 
